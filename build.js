@@ -55,17 +55,15 @@ const bundleHTML = (pugFiles) =>
   Promise.all(
     pugFiles.map(async (file) => {
       const template = await readFile(file)
-      const contentWithFM = frontMatter(template.toString())
-      let html = pug.render(contentWithFM.body)
-
-      if (process.env.MODE === 'dev') {
-        // in the dev environment, slap this script at the end of the HTML
-        // this will reload the page whenever you save a file!
-        html =
-          html.toString() +
-          `<script src="http://localhost:${liveReloadPort}/livereload.js?snipver=1"></script>`
-      }
+      const { attributes, body } = frontMatter(template.toString())
       const relativePath = file.replace(routeDir, '').replace('.pug', '.html')
+      const html = pug.renderFile(baseDir + '/layout/index.pug', {
+        env: process.env.MODE,
+        liveReloadPort,
+        markup: pug.render(body),
+        route: path.dirname(relativePath),
+        meta: attributes,
+      })
       await writeFile(buildDir + relativePath, html)
     })
   )

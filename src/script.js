@@ -7,8 +7,9 @@ const yoinkHTML = async (href) => {
   const response = await fetch(href)
   const htmlString = await response.text()
   const pageDoc = new DOMParser().parseFromString(htmlString, 'text/html')
-  const nextPage = pageDoc.querySelector('[data-route]')
-  return nextPage
+  const page = pageDoc.querySelector('[data-route]')
+  const title = pageDoc.querySelector('title').innerText
+  return { page, title }
 }
 
 const yoinkJS = async (pathname) => {
@@ -28,11 +29,12 @@ const animatePageIntoView = async (nextPage) => {
 
 const setVisiblePage = async ({ pathname, href }) => {
   cleanupFn()
-  const [html, js] = await Promise.all([
+  const [{ page, title }, js] = await Promise.all([
     yoinkHTML(href),
     yoinkJS(trimSlashes(pathname)),
   ])
-  await (html && animatePageIntoView(html))
+  document.querySelector('title').innerText = title
+  await (page && animatePageIntoView(page))
   const nextCleanupFn = js() || noop
   cleanupFn = nextCleanupFn
 }
