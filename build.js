@@ -71,10 +71,16 @@ const bundleHTML = (pugFiles) =>
   )
 
 /* Converts your fancy SASS to CSS */
-const bundleCSS = async () => {
-  const file = __dirname + scssFilePath
-  const { css } = await sassRender({ file })
-  await writeFile(__dirname + '/public/styles.css', css)
+const bundleCSS = async (sassFiles) => {
+  const buffer = Buffer.concat(
+    await Promise.all(
+      sassFiles.map(async (file) => {
+        const { css } = await sassRender({ file })
+        return css
+      })
+    )
+  )
+  await writeFile(buildDir + '/styles.css', buffer)
 }
 
 /* Runs your JS through a bundler called RollupJS.

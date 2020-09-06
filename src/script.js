@@ -22,6 +22,7 @@ const yoinkJS = async (pathname) => {
 const animatePageIntoView = async (nextPage) => {
   const currentPage = document.querySelector('[data-route]')
   currentPage.innerHTML = nextPage.innerHTML
+  currentPage.setAttribute('data-route', nextPage.getAttribute('data-route'))
 }
 
 const setVisiblePage = async (pathname) => {
