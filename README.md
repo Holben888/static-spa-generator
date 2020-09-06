@@ -11,20 +11,20 @@
 ## Install those deps
 
 ```sh
-npm install
+yarn
 ```
 
 ## Spin up the dev server
 
 ```sh
-npm start
+yarn start
 ```
 This will spin up a local development server (using [Vercel's serve](https://github.com/vercel/serve)) with live reloading for file changes.
 
 ## Build for production
 
 ```sh
-npm run build
+yarn build
 ```
 This should create a `bundle.js`, `styles.css`, and some static HTML files in the /public directory, without creating the dev server.
 
