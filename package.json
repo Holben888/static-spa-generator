@@ -12,9 +12,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "rollup": "^2.18.1",
-    "sass": "^1.26.10",
+    "front-matter": "^4.0.2",
     "livereload": "^0.9.1",
+    "pug": "^3.0.0",
+    "rollup": "^2.18.1",
+    "rollup-plugin-dynamic-import-variables": "^1.1.0",
+    "sass": "^1.26.10",
     "serve": "^11.3.2"
   }
 }
