@@ -19,5 +19,8 @@
     "rollup-plugin-dynamic-import-variables": "^1.1.0",
     "sass": "^1.26.10",
     "serve": "^11.3.2"
+  },
+  "dependencies": {
+    "markdown-it": "^11.0.0"
   }
 }

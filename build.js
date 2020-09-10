@@ -55,7 +55,7 @@ const filterRenderFiles = (files) =>
     const fileName = path.basename(file)
     const fileExt = path.extname(file)
 
-    const isTemplate = ['.pug', '.html'].includes(fileExt)
+    const isTemplate = ['.pug', '.html', '.md'].includes(fileExt)
     const isRenderFn = fileName === 'index.js'
     return isTemplate || isRenderFn
   })
