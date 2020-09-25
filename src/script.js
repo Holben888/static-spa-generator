@@ -1,7 +1,7 @@
 console.log('JS online!')
 const noop = () => {}
-let cleanupFn = noop
 let prevPathname = location.pathname
+let cleanupFn = noop
 
 const yoinkHTML = async (href) => {
   const response = await fetch(href)
@@ -12,30 +12,41 @@ const yoinkHTML = async (href) => {
   return { page, title }
 }
 
+const defaultPageTransition = (page, prevPage, destroyPrevPage) => {
+  destroyPrevPage()
+}
+
 const yoinkJS = async (pathname) => {
   try {
     const js = await import(`./routes/${pathname}/client.js`)
-    return js.default
+    return {
+      main: js.default || noop,
+      pageTransition: js.pageTransition || defaultPageTransition,
+    }
   } catch (e) {
-    return noop
+    return { main: noop, pageTransition: defaultPageTransition }
   }
 }
 
-const animatePageIntoView = async (nextPage) => {
-  const currentPage = document.querySelector('[data-route]')
-  currentPage.innerHTML = nextPage.innerHTML
-  currentPage.setAttribute('data-route', nextPage.getAttribute('data-route'))
+const animatePageIntoView = async (page, pageTransition) => {
+  const prevPage = document.querySelector('[data-route]')
+  const layoutContainer = prevPage.parentElement
+  layoutContainer.style.position = 'relative'
+  layoutContainer.insertBefore(page, prevPage)
+  await pageTransition(page, prevPage, () =>
+    layoutContainer.removeChild(prevPage)
+  )
 }
 
 const setVisiblePage = async ({ pathname, href }) => {
   cleanupFn()
-  const [{ page, title }, js] = await Promise.all([
+  const [{ page, title }, { main, pageTransition }] = await Promise.all([
     yoinkHTML(href),
     yoinkJS(trimSlashes(pathname)),
   ])
   document.querySelector('title').innerText = title
-  await (page && animatePageIntoView(page))
-  const nextCleanupFn = js() || noop
+  await (page && animatePageIntoView(page, pageTransition))
+  const nextCleanupFn = main() || noop
   cleanupFn = nextCleanupFn
 }
 
@@ -54,3 +65,9 @@ document.addEventListener('click', async (event) => {
     await setVisiblePage(target)
   }
 })
+
+// on startup
+;(async () => {
+  const { main } = await yoinkJS(trimSlashes(prevPathname))
+  cleanupFn = main() || noop
+})()

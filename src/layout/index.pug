@@ -21,9 +21,10 @@ html(lang="en-US")
         a(href="/about") About
         a(href="/blog") Blog
     
-    // where a given route actually gets renderered
-    main(data-route=route)
-      | !{markup}
+    // where a given route actually gets rendered
+    main
+      div(data-route=route)
+        | !{markup}
 
     footer
 
