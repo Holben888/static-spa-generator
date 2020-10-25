@@ -9,6 +9,7 @@ const pug = require('pug')
  * Uses a relative path to a layout file / dir
  * and loads the raw content of the file asynchronously
  * @param {string} layoutRelativePath path to layout file (or dir) relative to /src/layout
+ * @return {string} The string output of the determined layout file
  */
 const resolveLayout = async (layoutRelativePath = '') => {
   let layoutAbsolutePath = path.resolve(baseDir, 'layout', layoutRelativePath)
@@ -28,7 +29,8 @@ const resolveLayout = async (layoutRelativePath = '') => {
  * @param {string} layoutPath path to layout file (or dir) relative to /src/layout
  * @param {object} meta object of metadata keys provided by frontmatter
  * @param {string} markupPath path to inner markup (either relative to /layout or /routes)
- * @param {areinf} markup HTML markup to render with layout
+ * @param {string} markup HTML markup to render with layout
+ * @return {string} The HTML markup rendered within all specified layouts
  */
 const renderWithLayout = async (layoutPath = '', meta = {}, markupPath = '', markup = '') => {
   if (!layoutPath) return markup
@@ -50,7 +52,7 @@ const renderWithLayout = async (layoutPath = '', meta = {}, markupPath = '', mar
   return await renderWithLayout(
     // if we already rendered the index layout,
     // don't recursively render the index layout *again* (infinite loop!)
-    layoutPath.startsWith('index') ? '' : layout,
+    layoutPath.startsWith('index') && layout === 'index' ? '' : layout,
     layoutMeta,
     layoutPath,
     markupWithLayout

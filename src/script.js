@@ -1,11 +1,10 @@
 import wipeAnimation from './utils/wipe-animation'
+import {trimSlashes, zip} from './utils/script-helpers'
 
 console.log('JS online!')
 const noop = () => {}
 let prevPathname = location.pathname
 let cleanupFn = noop
-
-const zip = (...rows) => [...rows[0]].map((_,c) => rows.map(row => row[c]))
 
 const getPageDiff = (page, prevPage) => {
   const [allPageEls, allPrevPageEls] = [page, prevPage]
@@ -63,8 +62,6 @@ const setVisiblePage = async ({ pathname, href }) => {
   const nextCleanupFn = main() || noop
   cleanupFn = nextCleanupFn
 }
-
-const trimSlashes = (url) => url.replace(/^\/+|\/+$/g, '')
 
 document.addEventListener('click', async (event) => {
   const { target } = event
