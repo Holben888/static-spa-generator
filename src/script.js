@@ -1,20 +1,34 @@
+import wipeAnimation from './utils/wipe-animation'
+
 console.log('JS online!')
 const noop = () => {}
 let prevPathname = location.pathname
 let cleanupFn = noop
 
+const zip = (...rows) => [...rows[0]].map((_,c) => rows.map(row => row[c]))
+
+const getPageDiff = (page, prevPage) => {
+  const [allPageEls, allPrevPageEls] = [page, prevPage]
+    .map(p => [...p.querySelectorAll('[data-page]')])
+  
+  const pageElPairs = zip(allPageEls, allPrevPageEls)
+  for (let pair of pageElPairs) {
+    if (pair[0].getAttribute('data-page') !== pair[1].getAttribute('data-page')) {
+      return pair
+    }
+  }
+  return [null, null]
+}
+
 const yoinkHTML = async (href) => {
   const response = await fetch(href)
   const htmlString = await response.text()
-  const pageDoc = new DOMParser().parseFromString(htmlString, 'text/html')
-  const page = pageDoc.querySelector('[data-route]')
-  const title = pageDoc.querySelector('title').innerText
+  const page = new DOMParser().parseFromString(htmlString, 'text/html')
+  const title = page.querySelector('title').innerText
   return { page, title }
 }
 
-const defaultPageTransition = (page, prevPage, destroyPrevPage) => {
-  destroyPrevPage()
-}
+const defaultPageTransition = wipeAnimation
 
 const yoinkJS = async (pathname) => {
   try {
@@ -28,8 +42,8 @@ const yoinkJS = async (pathname) => {
   }
 }
 
-const animatePageIntoView = async (page, pageTransition) => {
-  const prevPage = document.querySelector('[data-route]')
+const animatePageIntoView = async (fullPage, pageTransition) => {
+  const [page, prevPage] = getPageDiff(fullPage, document)
   const layoutContainer = prevPage.parentElement
   layoutContainer.style.position = 'relative'
   layoutContainer.insertBefore(page, prevPage)
