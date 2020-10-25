@@ -21,13 +21,13 @@ html(lang="en-US")
         a(href="/about") About
         a(href="/blog") Blog
     
-    // where a given route actually gets rendered
     main
-      div(data-route=route)
+      // where a given route actually gets rendered
+      div(data-page=page)
         | !{markup}
 
     footer
 
-  script(src='not-a-react-bundle.js')
+  script(src='/not-a-react-bundle.js')
   if env === 'dev'
     script(src="http://localhost:" + liveReloadPort + "/livereload.js?snipver=1")

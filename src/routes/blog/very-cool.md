@@ -1,6 +1,7 @@
 ---
 title: An extremely good post!
 description: This article outlines my dopeness in great detail.
+layout: blog-post
 ---
 
 # About my dopeness

@@ -1,6 +1,7 @@
 ---
 title: An EVEN BETTER post.
 description: I further outline my dopeness with visual aids.
+layout: blog-post
 ---
 
 # Further descension into dopeness
