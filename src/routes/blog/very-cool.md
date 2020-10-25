@@ -6,4 +6,4 @@ layout: blog-post
 
 # About my dopeness
 
-I am extremely dope. Just [check out my blog!](https://dev.to/bholmesdev)
+I am extremely `dope.` Just [check out my blog!](https://dev.to/bholmesdev)

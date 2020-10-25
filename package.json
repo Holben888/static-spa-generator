@@ -21,6 +21,13 @@
     "serve": "^11.3.2"
   },
   "dependencies": {
-    "markdown-it": "^11.0.0"
+    "@babel/core": "^7.12.3",
+    "@rollup/plugin-babel": "^5.2.1",
+    "@rollup/plugin-commonjs": "^15.1.0",
+    "babel-plugin-prismjs": "^2.0.1",
+    "markdown-it": "^11.0.0",
+    "markdown-it-attrs": "^3.0.3",
+    "prismjs": "^1.22.0",
+    "rollup-plugin-node-resolve": "^5.2.0"
   }
 }
