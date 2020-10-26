@@ -1,0 +1,16 @@
+$orange: #e9846a;
+
+.highlight {
+  > pre::before {
+    $line-height: 24px;
+    $padding-top: 16px;
+    content: '';
+    position: absolute;
+    top: calc(#{$padding-top} + #{$line-height} * (var(--line-start) - 1));
+    height: calc(#{$line-height} * (var(--line-end) - var(--line-start)));
+    left: 0;
+    right: 0;
+    border-left: 5px solid $orange;
+    background: rgba($orange, 0.2);
+  }
+}
